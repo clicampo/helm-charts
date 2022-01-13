@@ -1,0 +1,21 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "prefect-agent.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+rules:
+  - apiGroups:
+      - batch
+      - extensions
+    resources:
+      - jobs
+    verbs:
+      - '*'
+  - apiGroups:
+      - ''
+    resources:
+      - events
+      - pods
+    verbs:
+      - '*'

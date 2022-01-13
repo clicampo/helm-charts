@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "prefect-agent.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "prefect-agent.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "prefect-agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "prefect-agent.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "prefect-agent.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - prefect agent kubernetes start
+          command:
+            - /bin/bash
+            - '-c'
+          env:
+            - name: PREFECT__CLOUD__API
+              value: 'https://api.prefect.io'
+            - name: NAMESPACE
+              value: {{ .Release.Namespace }}
+            - name: PREFECT__CLOUD__AGENT__LABELS
+              value: '[{{  include "agentLabels" . }}]'
+            - name: PREFECT__BACKEND
+              value: {{ .Values.agent.backend }}
+            - name: PREFECT__CLOUD__AGENT__AGENT_ADDRESS
+              value: 'http://:8080'
+            - name: SERVICE_ACCOUNT_NAME
+              value: {{ include "prefect-agent.serviceAccountName" . }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.agent.secretName }}
+          livenessProbe:
+            failureThreshold: 2
+            httpGet:
+              path: /api/health
+              port: 8080
+            initialDelaySeconds: 40
+            periodSeconds: 40
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
