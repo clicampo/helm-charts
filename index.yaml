@@ -1,0 +1,19 @@
+apiVersion: v1
+entries:
+  prefect-agent:
+  - apiVersion: v2
+    appVersion: 0.15.12
+    created: "2022-01-13T15:34:36.681340986Z"
+    description: A Helm chart for deploying a Prefect Agent
+    digest: 065eab214c854c3f7caeeffb319a65b204f75ac4ad55ed807fc47d5133dc1e54
+    maintainers:
+    - email: gabriel@montanola.com
+      name: Gabriel Montañola
+    name: prefect-agent
+    sources:
+    - https://github.com/clicampo/helm-charts
+    type: application
+    urls:
+    - https://github.com/clicampo/helm-charts/releases/download/prefect-agent-0.1.0/prefect-agent-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-01-13T15:34:36.681360786Z"
