@@ -8,4 +8,5 @@ repos:
     - id: fix-byte-order-marker
     - id: check-yaml
       args: [--allow-multiple-documents]
+      exclude: ^charts/.*/templates/
     - id: end-of-file-fixer
