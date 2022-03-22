@@ -1,0 +1,18 @@
+apiVersion: v2
+name: http-app
+description: |
+  This is a simple HTTP application helm chart. If your container has a web server,
+  and you know on which port it is running, you can use this chart to expose it.
+
+maintainers:
+  - name: Henrique Cunha
+    email: henrique.cunha@clicampo.com.br
+  - name: Gabriel Montañola
+    email: gabriel@montanola.com
+    
+sources:
+  - https://github.com/clicampo/helm-charts
+
+
+type: application
+version: "0.1.0"
