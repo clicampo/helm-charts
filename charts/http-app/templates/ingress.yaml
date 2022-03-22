@@ -1,5 +1,6 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "http-app.fullname" . -}}
+{{- $host := (printf "%s.%sclicampo.com" .Values.ingress.subdomain ( eq .Values.ingress.environment "staging" | ternary "staging." "" ) | quote ) -}}
 {{- $svcPort := .Values.service.port -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
@@ -18,22 +19,27 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "http-app.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
-    cert-manager.io/cluster-issuer: clicampo-staging-letsencrypt-production
+    cert-manager.io/cluster-issuer: clicampo-{{ .Values.ingress.environment }}-letsencrypt-production
     kubernetes.io/ingress.class: traefik-external
     kubernetes.io/tls-acme: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
-  {{- end }}
+    {{- if .Values.ingress.auth }}
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-clicampo-{{ .Values.ingress.environment }}-main-traefik-forward-auth@kubernetescrd
+    {{- end }}
+    {{- if .Values.ingress.annotations }}
+    {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
+    {{- end }}
 spec:
   tls:
     - hosts:
-        - {{ .Values.ingress.host | quote }}
+        - {{ $host }}
       secretName: {{ $fullName }}-tls
   rules:
-    - host: {{ .Values.ingress.host | quote }}
+    - host: {{ $host }}
       http:
         paths:
           - path: /
