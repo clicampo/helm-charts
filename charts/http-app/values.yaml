@@ -30,7 +30,9 @@ service:
 
 ingress:
   enabled: true
-  host: http-api.staging.clicampo.com
+  environment: staging
+  subdomain: http-api
+  auth: false
   # annotations:
 
 resources:
