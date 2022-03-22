@@ -1,0 +1,76 @@
+{{- $fullName := include "http-app.fullname" . -}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "http-app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "http-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "http-app.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              path: /docs
+              port: http
+          readinessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              path: /docs
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.env }}
+          env:
+            {{- range $element := .Values.env }}
+            - name: {{ $element.name }}
+              {{- if $element.value }}
+              value: {{ $element.value }}
+              {{- else if $element.fromVault }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $fullName }}-secret
+                  key: {{ $element.name }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

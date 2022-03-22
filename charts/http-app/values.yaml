@@ -1,0 +1,43 @@
+replicaCount: 1
+
+image:
+  repository: tutum/hello-world
+  pullPolicy: IfNotPresent
+
+env:
+  # - name: SAMPLE_VAULT_SECRET
+  #   fromVault: true
+  # - name: SAMPLE_PLAINT_TEXT_ENV
+  #   value: "Hello World"
+
+vaultSecret:
+  enabled: false
+  # vault:
+  #   address: https://my.vault.host
+  #   role: my-vault-role
+  #   path: my/secret/path
+  # data:
+  #   SAMPLE_VAULT_SECRET: ${my/secret/path#key}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  host: http-api.staging.clicampo.com
+  # annotations:
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
