@@ -36,16 +36,18 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          {{- if and .Values.healthcheck.enabled .Values.healthcheck.path }}
           livenessProbe:
-            initialDelaySeconds: 10
+            initialDelaySeconds: {{ .Values.healthcheck.delay }}
             httpGet:
-              path: /docs
+              path: {{ .Values.healthcheck.path }}
               port: http
           readinessProbe:
-            initialDelaySeconds: 10
+            initialDelaySeconds: {{ .Values.healthcheck.delay }}
             httpGet:
-              path: /docs
+              path: {{ .Values.healthcheck.path }}
               port: http
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.env }}

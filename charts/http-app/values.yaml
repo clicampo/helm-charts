@@ -4,6 +4,11 @@ image:
   repository: tutum/hello-world
   pullPolicy: IfNotPresent
 
+healthcheck:
+  enabled: false
+  # path: /
+  # delay: 10
+
 env:
   # - name: SAMPLE_VAULT_SECRET
   #   fromVault: true
