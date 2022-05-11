@@ -2,6 +2,24 @@ apiVersion: v1
 entries:
   http-app:
   - apiVersion: v2
+    created: "2022-05-11T22:42:58.034972402Z"
+    description: 'This is a simple HTTP application helm chart. If your container
+      has a web server, and you know on which port it is running, you can use this
+      chart to expose it. '
+    digest: 2c51cfed7f6e9945a8b40cfe445163847cfe18533f69b8f4f811452180729fd0
+    maintainers:
+    - email: henrique.cunha@clicampo.com.br
+      name: Henrique Cunha
+    - email: gabriel@montanola.com
+      name: Gabriel Montañola
+    name: http-app
+    sources:
+    - https://github.com/clicampo/helm-charts
+    type: application
+    urls:
+    - https://github.com/clicampo/helm-charts/releases/download/http-app-1.0.0/http-app-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
     created: "2022-03-22T20:55:59.998927737Z"
     description: 'This is a simple HTTP application helm chart. If your container
       has a web server, and you know on which port it is running, you can use this
@@ -71,4 +89,4 @@ entries:
     urls:
     - https://github.com/clicampo/helm-charts/releases/download/prefect-agent-0.1.0/prefect-agent-0.1.0.tgz
     version: 0.1.0
-generated: "2022-03-22T20:55:59.998938437Z"
+generated: "2022-05-11T22:42:58.034987902Z"
