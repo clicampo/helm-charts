@@ -10,8 +10,6 @@ healthcheck:
   # delay: 10
 
 env:
-  # - name: SAMPLE_VAULT_SECRET
-  #   fromVault: true
   # - name: SAMPLE_PLAINT_TEXT_ENV
   #   value: "Hello World"
 
@@ -44,7 +42,7 @@ resources:
     memory: 1024Mi
 
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 1
   maxReplicas: 3
   targetCPUUtilizationPercentage: 80
