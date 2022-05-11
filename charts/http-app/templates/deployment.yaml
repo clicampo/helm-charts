@@ -62,7 +62,7 @@ spec:
           {{- if .Values.vaultSecret.enabled }}
           envFrom:
             - secretRef:
-              name: {{ $fullName }}-secret
+                name: {{ $fullName }}-secret
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
