@@ -56,13 +56,13 @@ spec:
             - name: {{ $element.name }}
               {{- if $element.value }}
               value: {{ $element.value }}
-              {{- else if $element.fromVault }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $fullName }}-secret
-                  key: {{ $element.name }}
               {{- end }}
             {{- end }}
+          {{- end }}
+          {{- if .Values.vaultSecret.enabled }}
+          envFrom:
+            - secretRef:
+              name: {{ $fullName }}-secret
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
