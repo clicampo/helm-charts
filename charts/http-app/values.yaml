@@ -1,17 +1,37 @@
+---
 replicaCount: 1
 
 image:
   repository: tutum/hello-world
   pullPolicy: IfNotPresent
 
-healthcheck:
-  enabled: false
-  # path: /
-  # delay: 10
+livenessProbe:
+  {}
+  # httpGet:
+  #   path: /healthz
+  #   port: 8080
+  #   httpHeaders:
+  #     - name: Custom-Header
+  #       value: Awesome
+  # initialDelaySeconds:
+  # failureThreshold: 1
+  # periodSeconds: 60
 
-env:
-  # - name: SAMPLE_PLAINT_TEXT_ENV
-  #   value: "Hello World"
+readinessProbe:
+  {}
+  # httpGet:
+  #   path: /healthz
+  #   port: 8080
+  #   httpHeaders:
+  #     - name: Custom-Header
+  #       value: Awesome
+  # initialDelaySeconds: 50
+  # failureThreshold: 1
+  # periodSeconds: 50
+
+env: []
+#  - name: SAMPLE_PLAINT_TEXT_ENV
+#    value: "Hello World"
 
 vaultSecret:
   enabled: false
@@ -27,7 +47,7 @@ service:
   port: 80
 
 ingress:
-  enabled: true
+  enabled: false
   environment: staging
   subdomain: http-api
   auth: false
