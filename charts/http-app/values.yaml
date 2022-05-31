@@ -47,7 +47,7 @@ service:
   port: 80
 
 ingress:
-  enabled: true
+  enabled: false
   environment: staging
   subdomain: http-api
   auth: false
