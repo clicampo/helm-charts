@@ -1,13 +1,10 @@
+---
 replicaCount: 1
 
 image:
   repository: tutum/hello-world
   pullPolicy: IfNotPresent
 
-
-env:
-  # - name: SAMPLE_PLAINT_TEXT_ENV
-  #   value: "Hello World"
 livenessProbe:
   {}
   # httpGet:
@@ -31,6 +28,11 @@ readinessProbe:
   # initialDelaySeconds: 50
   # failureThreshold: 1
   # periodSeconds: 50
+
+env: []
+#  - name: SAMPLE_PLAINT_TEXT_ENV
+#    value: "Hello World"
+
 vaultSecret:
   enabled: false
   # vault:
