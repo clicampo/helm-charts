@@ -51,7 +51,7 @@ spec:
             {{- range $element := .Values.env }}
             - name: {{ $element.name }}
               {{- if $element.value }}
-              value: {{ $element.value }}
+              value: {{ $element.value | quote }}
               {{- end }}
             {{- end }}
           {{- end }}

@@ -29,9 +29,12 @@ readinessProbe:
   # failureThreshold: 1
   # periodSeconds: 50
 
-env: []
-#  - name: SAMPLE_PLAINT_TEXT_ENV
-#    value: "Hello World"
+env:
+  []
+  # - name: SAMPLE_PLAIN_TEXT_ENV
+  #   value: "Hello World"
+  # - name: SAMPLE_INT_ENV
+  #   value: 420
 
 vaultSecret:
   enabled: false
