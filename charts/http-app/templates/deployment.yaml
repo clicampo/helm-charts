@@ -26,6 +26,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      serviceAccountName: {{ include "http-app.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
