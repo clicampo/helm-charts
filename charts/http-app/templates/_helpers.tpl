@@ -60,3 +60,17 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+Deployment Annotations
+*/}}
+{{- define "http-app.deploymentAnnotations" -}}
+{{- if .Values.opConnect.enabled -}}
+operator.1password.io/item-path: {{ .Values.opConnect.item.path }}
+operator.1password.io/item-name: {{ .Values.opConnect.item.name }}
+{{- end -}}
+{{ if .Values.deploymentAnnotations }}
+{{ toYaml .Values.deploymentAnnotations }}
+{{- end -}}
+{{- end -}}

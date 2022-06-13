@@ -4,10 +4,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $fullName }}
-  {{- with .Values.deploymentAnnotations }}
   annotations:
-        {{- toYaml . | nindent 4 }}
-  {{- end }}
+     {{- include "http-app.deploymentAnnotations" . | nindent 4 }}
   labels:
     {{- include "http-app.labels" . | nindent 4 }}
 spec:
@@ -60,10 +58,16 @@ spec:
               {{- end }}
             {{- end }}
           {{- end }}
-          {{- if .Values.vaultSecret.enabled }}
+          {{- if or .Values.vaultSecret.enabled .Values.opConnect.enabled }}
           envFrom:
+            {{- if .Values.vaultSecret.enabled }}
             - secretRef:
                 name: {{ $fullName }}-secret
+            {{- end }}
+            {{- if .Values.opConnect.enabled }}
+            - secretRef:
+                name: {{ .Values.opConnect.item.name }}
+            {{- end }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

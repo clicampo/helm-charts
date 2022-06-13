@@ -5,6 +5,13 @@ image:
   repository: tutum/hello-world
   pullPolicy: IfNotPresent
 
+deploymentAnnotations:
+  {}
+  # https://kubernetes.io/blog/2021/04/20/annotating-k8s-for-humans/
+  # a8r.io/owner: john doe
+  # a8r.io/chat: #engineering
+  # a8r.io/description: my beatiful service
+
 livenessProbe:
   {}
   # httpGet:
@@ -44,6 +51,12 @@ vaultSecret:
   #   path: my/secret/path
   # data:
   #   SAMPLE_VAULT_SECRET: ${my/secret/path#key}
+
+opConnect:
+  enabled: false
+  # item:
+  #   path:
+  #   name:
 
 service:
   type: ClusterIP

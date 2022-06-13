@@ -17,4 +17,4 @@ sources:
   - https://github.com/clicampo/helm-charts
 
 type: application
-version: "2.2.0"
+version: "2.3.0"
