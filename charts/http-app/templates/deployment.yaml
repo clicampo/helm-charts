@@ -4,6 +4,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $fullName }}
+  {{- with .Values.deploymentAnnotations }}
+  annotations:
+        {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "http-app.labels" . | nindent 4 }}
 spec:
